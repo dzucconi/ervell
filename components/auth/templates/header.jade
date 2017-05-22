@@ -1,7 +1,17 @@
-.auth-logo
-  a(href="/")
+.AuthHeader
+  a.AuthHeader__logo( href='/' )
     include ../../../public/images/arena-mark.svg
-.auth-nav
-  ul.breadcrumb
-    li.auth-toggle(data-mode="login" class=mode == 'login' ? 'is-active' : ''): a Login
-    li.auth-toggle(data-mode="signup" class=mode == 'signup' ? 'is-active' : ''): a Sign up
+
+  -var mode = 'login'
+  nav.AuthHeader__nav
+    a.js-toggle(
+      data-mode='login'
+      data-active=(mode === 'login')
+    ) Login
+
+    span.Separator
+
+    a.js-toggle(
+      data-mode='signup'
+      data-active=(mode === 'signup')
+    ) Sign up

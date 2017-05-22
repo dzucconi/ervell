@@ -15,7 +15,7 @@ class State extends Backbone.Model
 module.exports = class AuthView extends Backbone.View
   _.extend @prototype, Form
 
-  className: 'auth authPage'
+  className: 'auth'
 
   template: ->
     templateMap[@state.get 'mode'] arguments...

@@ -1,22 +1,29 @@
-#auth-page.valign-outer
-  .valign-inner
-    section#auth-body
-      include ./header
-      - formUrl = sd.REDIRECT_TO ? "/me/sign_in?redirect-to=" + sd.REDIRECT_TO : '/me/sign_in'
-      form.auth-login-email.auth-form( action=formUrl method="POST" )
-        input.input--wide.input--relative.is-block(
-          name='email', type='email', placeholder='Email', required, autofocus=true
-        )
-        input.input--wide.input--relative.is-block(
-          name='password', type='password', placeholder='Password', autocomplete='on', required
-        )
-        footer.auth-form-options
-          .modal-checkbox
-            input( id='remember_me', name='remember_me', type='checkbox', value='1', checked )
-            label( for='remember_me', data-label='Remember me' )
-          .modal-forgot
-            a.faux-underline.auth-toggle( data-mode='forgot', rel='nofollow' ) Forgot?
+- formUrl = sd.REDIRECT_TO ? '/me/sign_in?redirect-to=' + sd.REDIRECT_TO : '/me/sign_in'
 
-        .auth-errors &nbsp;
+include ./header
 
-        button#auth-login.auth-submit.button--wide.button--border.button--relative Login
+form.Auth__form( action= formUrl method='POST' )
+  .Fieldset
+    input.Input(
+      name='email'
+      type='email'
+      placeholder='Email'
+      required
+      autofocus
+    )
+
+    input.Input(
+      name='password'
+      type='password'
+      placeholder='Password'
+      autocomplete='on'
+      required
+    )
+
+    //- input( id='remember_me', name='remember_me', type='checkbox', value='1', checked )
+
+    //- a( data-mode='forgot', rel='nofollow' )
+    //-   | Forgot?
+
+  button.Button.Button--divider
+    | Login
