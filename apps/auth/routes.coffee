@@ -1,39 +1,53 @@
-#
-# Auth routes
-#
-Backbone = require 'backbone'
-sd = require("sharify").data
-User = require "../../models/user"
-cache = require "../../lib/cache.coffee"
-sanitizeRedirect = require '../../components/sanitize_redirect/index'
-{ parse } = require 'url'
+User = require '../../models/user'
+cache = require '../../lib/cache'
+url = require 'url'
 
 clearCache = (user) ->
   user = new User user.attributes
   cache.del "#{user.url()}{}"
 
-@logIn = (req, res, next) ->
-  return res.redirect('/') if req.user?.id
-  res.locals.sd.REDIRECT_TO = req.session.redirectTo || req.query['redirect-to']
-  res.locals.sd.MODE = 'login'
-  res.render 'log_in'
+internalReferer = (req) ->
+  refererURI = url.parse req.headers.referer or ''
+  refererURI.href if refererURI.host is req.get('host')
 
-@signUp = (req, res, next) ->
-  return res.redirect('/') if req.user?.id
-  res.locals.sd.MODE = 'signup'
-  res.render 'sign_up'
+getRedirectTo = (req) ->
+  req.query['redirect-to'] or internalReferer(req) or '/'
+
+@logIn = (req, res) ->
+  redirectTo = getRedirectTo req
+
+  formURL = if redirectTo?
+    "/me/sign_in?redirect-to=#{redirectTo}"
+  else
+    '/me/sign_in'
+
+  res.locals.sd.REFERER = req.headers.referer
+  res.locals.sd.INTERNAL_REFERER = internalReferer req
+  res.locals.sd.REDIRECT_TO = redirectTo
+
+  res.render 'log_in',
+    mode: 'log_in'
+    form_url: 'formURL'
+
+@signUp = (req, res) ->
+  res.render 'sign_up',
+    mode: 'sign_up'
+
+@forgot = (req, res) ->
+  res.render 'forgot_password',
+    mode: 'forgot'
 
 @logout = (req, res, next) ->
   req.logout()
   next()
 
 @refresh = (req, res, next) ->
-  return res.redirect("/") unless req.user
+  return res.redirect('/') unless req.user
   req.user.fetch
-    error: res.backboneError
+    error: next
     success: ->
       req.login req.user, (error) ->
-        if (error)
+        if error
           next error
         else
           clearCache req.user
@@ -44,17 +58,10 @@ clearCache = (user) ->
   res.locals.sd.TOKEN = req.params.token
   res.render 'reset_password'
 
-@redirectBack = (req, res, next) ->
-  url = req.body['redirect-to'] or
-        req.query['redirect-to'] or
-        req.param('redirect_uri') or
-        req.session.redirectTo or
-        parse(req.get('Referrer') or '').path or
-        '/'
+@redirectBack = (req, res) ->
+  res.redirect getRedirectTo(req)
 
-  res.redirect url
-
-@redirect = (req, res, next) ->
+@redirect = (req, res) ->
   url = req.body['redirect-to'] or req.query['redirect-to']
   res.redirect url
 

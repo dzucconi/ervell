@@ -1,0 +1,16 @@
+header.AuthHeader
+  a.AuthHeader__logo( href='/' )
+    include ../../../public/images/arena-mark.svg
+
+  nav.AuthHeader__nav
+    if mode === 'log_in'
+      span Log in
+    else
+      a( href='/log_in' ) Log in
+
+    .Separator
+
+    if mode === 'sign_up'
+      span Sign up
+    else
+      a( href='/sign_up' ) Sign up
