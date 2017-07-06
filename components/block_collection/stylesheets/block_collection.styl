@@ -1,20 +1,32 @@
 .grid
-  display flex
-  flex-flow row wrap
-  align-items center
+  // display flex
+  // flex-direction row
+  // flex-wrap wrap
+  // align-items center
+  // justify-content space-between
+  display grid
+  grid-template-columns block_width block_width block_width block_width
+  grid-template-rows block_width block_width block_width block_width
+  grid-gap 5em unit
+
+.pagemarker
+  position absolute
 
 .grid--feed
-  justify-content center
+  text-align center
 
 .grid__block
-  flex 1 1 285px
-  max-width 315px
+  // flex 1 1 285px
+  // max-width 315px
+  // margin 0 (unit / 2) 5em (unit / 2)
   text-align center
-  margin 0 10px 90px 10px
   position relative
   display inline-block
-  background #fff
+  width block_width
+  height block_width
+  background white
   user-select none
+  vertical-align top
 
   &:hover
     cursor pointer

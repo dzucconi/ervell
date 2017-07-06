@@ -1,18 +1,9 @@
-extends ../../../../components/path/templates/tab_content
+.Section
+  a.Button.Button--draggable.Button--fill( href= bookmarklet )
+    | Add to Are.na
 
-block vars
-  - slug = "bookmarklet"
+  p.Type.Type--xs.Utility--align-center
+    | Drag this button to your bookmarks bar &#10548;
 
-block content
-  .tools__mobile-title
-    | Bookmarklet
-
-  .Section.Section--narrow.Section--bordered
-    a.Button.Button--draggable.Button--fill( href= bookmarklet )
-      | Add to Are.na
-
-    p.Type.Type--xs.Utility--align-center
-      | Drag this button to your bookmarks bar &#10548;
-
-    p.Type
-      | With the bookmarklet, you can easily add images, videos, links, and text to your Arena channels while surfing the web.
+  p.Type
+    | With the bookmarklet, you can easily add images, videos, links, and text to your Arena channels while surfing the web.

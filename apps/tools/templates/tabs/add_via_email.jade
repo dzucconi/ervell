@@ -1,24 +1,15 @@
-extends ../../../../components/path/templates/tab_content
+.Section
+  input.Input(
+    value= user.get('post_address')
+    type='email'
+    readonly
+  )
 
-block vars
-  - slug = "add-via-email"
+  p.Type
+    | Sending an e-mail to this address will post the contents (including attachments) to an automatically generated private channel called “Add via Email.”
 
-block content
-  .tools__mobile-title
-    | Add via Email
+  p.Type
+    | You can send emails to specific channels by writing a channel title in the subject line.
 
-  .Section.Section--narrow.Section--bordered
-    input.Input(
-      value= user.get('post_address')
-      type='email'
-      readonly
-    )
-
-    p.Type
-      | Sending an e-mail to this address will post the contents (including attachments) to an automatically generated private channel called “Add via Email.”
-
-    p.Type
-      | You can send emails to specific channels by writing a channel title in the subject line.
-
-    p.Type
-      | Your emails must be sent from the address <strong>#{user.get('email')}</strong>.
+  p.Type
+    | Your emails must be sent from the address <strong>#{user.get('email')}</strong>.

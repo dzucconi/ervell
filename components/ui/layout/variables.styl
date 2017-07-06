@@ -1,0 +1,9 @@
+grid-block-size = 19em
+
+grid-block-constrain()
+  for i in (1..8)
+    size = (grid-block-size * i) + (i * 1em)
+    @media (min-width: size + 4em)
+      width size
+      margin-left auto
+      margin-right auto

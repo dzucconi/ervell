@@ -2,11 +2,10 @@ if user && user.isPremium() && !following && !followers && !sd.SHARE_TOKEN && !i
   .Constrain
     include ../../../filter/templates/search_bar
 
-.Constrain.block-collection
-  .Blocks.grid.js-block-collection(
-    class= (user && channel && user.id === channel.get('user').id) ? 'is-editable' : ''
-  )
-    include _grid_contents.jade
+.grid.block-collection.js-block-collection(
+  class= (user && channel && user.id === channel.get('user').id) ? 'is-editable' : ''
+)
+  include _grid_contents.jade
 
-    if isEmbedded
-      include ../../grid_item/templates/types/embedded
+  if isEmbedded
+    include ../../grid_item/templates/types/embedded
