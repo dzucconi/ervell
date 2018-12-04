@@ -128,6 +128,7 @@ export default class Overlay extends PureComponent {
         height: wrapperHeight,
       } = this.wrapper.getBoundingClientRect();
 
+
       const isOverflowingViewportTop = anchorY === 'bottom' && topEdge <= 0;
       const isOverflowingViewportBottom = anchorY === 'top' && bottomEdge >= window.innerHeight;
 
@@ -138,6 +139,10 @@ export default class Overlay extends PureComponent {
       if (isOverflowingViewportBottom) {
         const bottomDifference = window.innerHeight - bottomEdge;
         return this.setState({ height: wrapperHeight + bottomDifference });
+      }
+
+      if (this.state.height) {
+        return this.setState({ height: null });
       }
 
       return null;
