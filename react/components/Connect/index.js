@@ -55,11 +55,15 @@ export default class Connect extends Component {
       query: PropTypes.object.isRequired,
       variables: PropTypes.object,
     })),
+    onSuccess: PropTypes.func,
+    onError: PropTypes.func,
   }
 
   static defaultProps = {
     f: 1,
     refetchQueries: [],
+    onSuccess: () => {},
+    onError: () => {},
   }
 
   state = {
@@ -77,7 +81,13 @@ export default class Connect extends Component {
   render() {
     const { mode } = this.state;
     const {
-      id, type, f, refetchQueries, ...rest
+      id,
+      type,
+      f,
+      refetchQueries,
+      onSuccess,
+      onError,
+      ...rest
     } = this.props;
 
     return (
@@ -101,6 +111,8 @@ export default class Connect extends Component {
               id={id}
               type={type}
               refetchQueries={refetchQueries}
+              onSuccess={onSuccess}
+              onError={onError}
             />
           </Fieldset>
         }
