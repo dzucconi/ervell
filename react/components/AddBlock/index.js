@@ -113,6 +113,8 @@ class AddBlock extends PureComponent {
     uploaderKey: new Date().getTime(),
   }
 
+  inputEl = React.createRef()
+
   handleChange = ({ target: { value } }) => {
     const mode = value === '' ? 'resting' : 'active';
     this.setState({ value, mode });
@@ -144,6 +146,8 @@ class AddBlock extends PureComponent {
           mode: 'resting',
           inputKey: new Date().getTime(),
         });
+
+        this.inputEl.current.focus();
 
         return onAddBlock(block);
       })
@@ -199,6 +203,7 @@ class AddBlock extends PureComponent {
                 key={inputKey}
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
+                ref={this.inputEl}
               />
 
               {mode === 'active' &&
