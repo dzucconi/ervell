@@ -12,7 +12,11 @@ const elVisible = (el) => {
 export const touch = () =>
   'ontouchstart' in window || 'onmsgesturechange' in window;
 
+export const clientSide = () =>
+  typeof window !== 'undefined';
+
 export default {
   elVisible,
   touch,
+  clientSide,
 };

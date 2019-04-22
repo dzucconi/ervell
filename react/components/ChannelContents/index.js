@@ -6,9 +6,11 @@ import chunk from 'react/util/chunk';
 
 import channelContentsFragment from 'react/components/ChannelContents/fragments/channelContents';
 
+import Modal from 'react/components/UI/Modal/Portal';
 import Grid from 'react/components/UI/Grid';
 import GridItem from 'react/components/UI/Grid/components/GridItem';
 import AddBlock from 'react/components/AddBlock';
+import ChannelContentsSorter from 'react/components/ChannelContentsSorter';
 import ChannelContentsPage from 'react/components/ChannelContents/components/ChannelContentsPage';
 import ChannelContentsAppended from 'react/components/ChannelContents/components/ChannelContentsAppended';
 
@@ -23,6 +25,7 @@ export default class ChannelContents extends PureComponent {
   }
 
   state = {
+    mode: 'resting',
     pendingSkeleton: [],
   }
 
@@ -32,8 +35,14 @@ export default class ChannelContents extends PureComponent {
     }));
   }
 
+  handleDrag = (e) => {
+    e.preventDefault();
+
+    this.setState({ mode: 'sort' });
+  }
+
   render() {
-    const { pendingSkeleton } = this.state;
+    const { pendingSkeleton, mode } = this.state;
     const {
       channel: { id, skeleton, can },
       chunkSize,
@@ -43,32 +52,45 @@ export default class ChannelContents extends PureComponent {
     const chunked = chunk(skeleton, chunkSize);
 
     return (
-      <Grid wrapChildren={false} {...rest}>
-        {can.add_to &&
-          <React.Fragment>
-            <GridItem>
-              <AddBlock
-                channel_id={id}
-                onAddBlock={this.handleAddBlock}
-              />
-            </GridItem>
-          </React.Fragment>
+      <React.Fragment>
+        {mode === 'sort' &&
+          <Modal onClose={() => this.setState({ mode: 'resting' })}>
+            <ChannelContentsSorter
+              id={id}
+              skeleton={skeleton}
+            />
+          </Modal>
         }
 
-        <ChannelContentsAppended
-          id={id}
-          pendingSkeleton={pendingSkeleton}
-        />
+        <Grid wrapChildren={false} {...rest}>
+          {can.add_to &&
+            <React.Fragment>
+              <GridItem>
+                <AddBlock
+                  channel_id={id}
+                  onAddBlock={this.handleAddBlock}
+                />
+              </GridItem>
+            </React.Fragment>
+          }
 
-        {chunked.map((pageSkeleton, idx) => (
-          <ChannelContentsPage
-            key={`Page:${idx + 1}`}
+          <ChannelContentsAppended
             id={id}
-            skeleton={pageSkeleton}
-            context={skeleton}
+            pendingSkeleton={pendingSkeleton}
+            onDrag={this.handleDrag}
           />
-        ))}
-      </Grid>
+
+          {chunked.map((pageSkeleton, idx) => (
+            <ChannelContentsPage
+              key={`Page:${idx + 1}`}
+              id={id}
+              skeleton={pageSkeleton}
+              context={skeleton}
+              onDrag={this.handleDrag}
+            />
+          ))}
+        </Grid>
+      </React.Fragment>
     );
   }
 }

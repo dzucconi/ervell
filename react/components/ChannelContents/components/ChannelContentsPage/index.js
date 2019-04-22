@@ -31,7 +31,9 @@ export default class ChannelContentsPage extends PureComponent {
 
   render() {
     const { mode } = this.state;
-    const { id, skeleton, context } = this.props;
+    const {
+ id, skeleton, context, onDrag 
+} = this.props;
 
     return (
       <React.Fragment>
@@ -49,6 +51,7 @@ export default class ChannelContentsPage extends PureComponent {
             id={id}
             skeleton={skeleton}
             context={context}
+            onDrag={onDrag}
           />
         ) : (
           <ChannelContentsPageSkeleton

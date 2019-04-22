@@ -26,7 +26,7 @@ export default class ChannelContentsSet extends PureComponent {
   }
 
   render() {
-    const { id, skeleton } = this.props;
+    const { id, skeleton, onDrag } = this.props;
 
     const variables = {
       id,
@@ -59,7 +59,10 @@ export default class ChannelContentsSet extends PureComponent {
           const { channel: { contents } } = data;
 
           return contents.map(connectable => (
-            <GridItem key={`${connectable.__typename}:${connectable.id}`}>
+            <GridItem
+              key={`${connectable.__typename}:${connectable.id}`}
+              onDragStart={onDrag}
+            >
               <Cell.Konnectable
                 konnectable={connectable}
                 context={context}
